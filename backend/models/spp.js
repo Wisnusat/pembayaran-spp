@@ -1,35 +1,36 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class spp extends Model {
     static associate(models) {
       // define association here
       this.hasMany(models.siswa, {
         foreignKey: "id_spp",
-        as: "siswa"
-      })
+        as: "siswa",
+      });
 
       this.hasMany(models.pembayaran, {
         foreignKey: "id_spp",
-        as: "pembayaran"
-      })
+        as: "pembayaran",
+      });
     }
-  };
-  spp.init({
-    id_spp: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+  }
+  spp.init(
+    {
+      id_spp: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      kelas: DataTypes.STRING,
+      nominal: DataTypes.INTEGER,
     },
-    tahun: DataTypes.INTEGER,
-    nominal: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'spp',
-    tableName: 'spp'
-  });
+    {
+      sequelize,
+      modelName: "spp",
+      tableName: "spp",
+    }
+  );
   return spp;
 };
