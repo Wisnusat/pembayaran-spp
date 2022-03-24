@@ -1,83 +1,51 @@
 const express = require("express");
 const app = express();
 
-// call model
-const siswa = require("../models/index").siswa;
+// call tunggakan models
+const tunggakan = require("../models/index").tunggakan;
 
 // allow request body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// get data by NISN
-app.get("/:nisn", async (req, res) => {
-  let nisn = {
-    nisn: req.params.nisn,
-  };
-
-  siswa
-    .findOne({ where: nisn, include: [{ all: true, nested: true }] })
-    .then((result) => {
-      if (result) {
-        res.json({
-          message: "Data founded",
-          data_siswa: result,
-          found: true,
-        });
-      } else {
-        res.json({
-          message: "Data not found",
-          found: false,
-        });
-      }
-    })
-    .catch((error) => {
-      res.json({
-        message: error.message,
-      });
-    });
-});
-
 // auth_verify
 const verify = require("./auth_verify");
 app.use(verify);
 
-// get data
+//get data
 app.get("/", async (req, res) => {
-  siswa
+  tunggakan
     .findAll({ include: [{ all: true, nested: true }] })
     .then((result) => {
       res.json({
-        message: "Data founded",
-        siswa: result,
+        message: "Data Found",
+        tunggakan: result,
         found: true,
       });
     })
     .catch((error) => {
       res.json({
         message: error.message,
-        found: false,
+        found: true,
       });
     });
 });
 
 // add data
 app.post("/", async (req, res) => {
-  // put data
+  // data declaration
   let data = {
     nisn: req.body.nisn,
-    nis: req.body.nis,
-    nama: req.body.nama,
-    id_kelas: req.body.id_kelas,
-    alamat: req.body.alamat,
-    no_telp: req.body.no_telp,
     id_spp: req.body.id_spp,
+    bulan: req.body.bulan,
+    status: req.body.status,
   };
 
-  siswa
+  tunggakan
     .create(data)
     .then((result) => {
       res.json({
-        message: "Data inserted",
+        message: "Data Inserted",
         data: result,
       });
     })
@@ -90,25 +58,23 @@ app.post("/", async (req, res) => {
 
 // update data
 app.put("/", async (req, res) => {
-  // put data
+  // data declaration
   let data = {
-    nis: req.body.nis,
-    nama: req.body.nama,
-    id_kelas: req.body.id_kelas,
-    alamat: req.body.alamat,
-    no_telp: req.body.no_telp,
+    nisn: req.body.nisn,
     id_spp: req.body.id_spp,
+    bulan: req.body.bulan,
+    status: req.body.status,
   };
 
   let param = {
-    nisn: req.body.nisn,
+    id_tunggakan: req.body.id_tunggakan,
   };
 
-  siswa
+  tunggakan
     .update(data, { where: param })
     .then((result) => {
       res.json({
-        message: "Data updated",
+        message: "Data Updated",
         data: result,
       });
     })
@@ -120,17 +86,17 @@ app.put("/", async (req, res) => {
 });
 
 // delete data
-app.delete("/:nisn", async (req, res) => {
-  // put data
+app.delete("/:id_tunggakan", async (req, res) => {
+  // parameter declaration
   let param = {
-    nisn: req.params.nisn,
+    id_tunggakan: req.params.id_tunggakan,
   };
 
-  siswa
+  tunggakan
     .destroy({ where: param })
     .then((result) => {
       res.json({
-        message: "Data deleted",
+        message: "Data Deleted",
         data: result,
       });
     })

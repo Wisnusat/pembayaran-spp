@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
   // put data
   let data = {
-    kelas: req.body.kelas77,
+    kelas: req.body.kelas,
     nominal: req.body.nominal,
   };
 
@@ -58,7 +58,7 @@ app.post("/", async (req, res) => {
 app.put("/", async (req, res) => {
   // put data
   let data = {
-    tahun: req.body.tahun,
+    kelas: req.body.kelas,
     nominal: req.body.nominal,
   };
 

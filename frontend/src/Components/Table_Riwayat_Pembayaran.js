@@ -36,7 +36,6 @@ class Riwayat_Pembayaran extends React.Component {
       userData: userdata,
       id_petugas: userdata.id_petugas,
     });
-    console.log(userdata.id_petugas);
   };
 
   getDataPembayaran = () => {

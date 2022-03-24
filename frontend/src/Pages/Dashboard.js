@@ -288,7 +288,7 @@ class Dashboard extends React.Component {
             <div className="w-full">
               {/* Tabs 1 */}
               <h4 className="text-2xl font-bold leading-tight text-gray-800">
-                Admin Tabs
+                CRUD Tabs
               </h4>
               <Tabs
                 color="indigo"
@@ -302,7 +302,7 @@ class Dashboard extends React.Component {
 
               {/* Tabs 2 */}
               <h4 className="text-2xl font-bold leading-tight text-gray-800">
-                Siswa Tabs
+                Transaksi Tabs
               </h4>
               <Tabs
                 color="indigo"
