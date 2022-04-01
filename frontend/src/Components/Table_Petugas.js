@@ -18,6 +18,7 @@ class Petugas extends React.Component {
       id: "",
       data_petugas: [],
       message: "",
+      userData: "",
       found: "",
     };
     // dapetin token dari localstorage
@@ -29,6 +30,14 @@ class Petugas extends React.Component {
       window.location = "/login";
     }
   }
+
+  getUser = () => {
+    let userdata = JSON.parse(localStorage.getItem("user"));
+    this.setState({
+      userData: userdata,
+    });
+  };
+
   getDataPetugas = () => {
     let url = base_url + "/petugas";
     axios
@@ -146,12 +155,13 @@ class Petugas extends React.Component {
   };
   componentDidMount() {
     this.getDataPetugas();
+    this.getUser();
   }
   render() {
     return (
       <>
         <div
-          className="mx-auto flex flex-row items-start
+          className="mx-auto flex flex-row
 items-center justify-between pb-4 border-b border-gray-300"
         >
           <div className="mx-auto">
@@ -170,14 +180,23 @@ leading-tight text-gray-800 text-center"
             </div>
           </div>
           <div>
-            <button
-              onClick={() => this.addData()}
-              className="transition duration-150 ease-in-out hover:bg-indigo-600
+            {this.state.userData.level === "admin" ? (
+              <button
+                onClick={() => this.addData()}
+                className="transition duration-150 ease-in-out hover:bg-indigo-600
 focus:outline-none border bg-indigo-700 rounded text-white px-8
 py-2 text-sm"
-            >
-              Tambah Data
-            </button>
+              >
+                Tambah Data
+              </button>
+            ) : (
+              <button
+                disabled
+                className=" bg-gray-600 rounded text-white px-8 py-2 text-sm"
+              >
+                Tambah Data
+              </button>
+            )}
             {/* Modal */}
             <div
               className={`${this.state.modal}
@@ -423,59 +442,45 @@ uppercase tracking-wider"
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Username/nama
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Role
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Password
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Tanggal Dibuat
                       </th>
                       <th
                         scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         Changes
                       </th>
                     </tr>
                   </thead>
-                  <tbody
-                    class="bg-white
-divide-y divide-gray-200"
-                  >
+                  <tbody class="bg-white divide-y divide-gray-200">
                     {this.state.data_petugas.map((item) => (
                       <tr>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap">
                           <div class="text-sm text-gray-900">
                             {item.id_petugas}
                           </div>
                         </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap">
                           <div class="text-sm text-gray-900">
                             {item.username}
                           </div>
@@ -484,137 +489,128 @@ py-4 whitespace-nowrap"
                             {item.nama_petugas}
                           </div>
                         </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap">
                           {item.level === "admin" ? (
-                            <span
-                              class="px-2 inline-flex text-xs leading-5 font-semibold
-rounded-full bg-green-100 text-green-800"
-                            >
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                               {item.level}
                             </span>
                           ) : (
-                            <span
-                              class="px-2 inline-flex text-xs leading-5 font-semibold
-rounded-full bg-red-100 text-red-800"
-                            >
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                               {item.level}
                             </span>
                           )}
                         </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap">
                           <div class="text-sm text-gray-900">
                             {item.password}
                           </div>
                         </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
+                        <td class="px-6 py-4 whitespace-nowrap">
                           <div class="text-sm text-gray-900">
                             {item.createdAt}
                           </div>
                         </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
-                          <div class="text-sm text-gray-900">
-                            {item.id_petugas === this.state.id ? (
-                              <Link to="/setting">
-                                <span
-                                  class="px-2 inline-flex text-xs leading-5 font-semibold
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          {this.state.userData.level === "admin" ? (
+                            <div class="text-sm text-gray-900">
+                              {item.id_petugas === this.state.id ? (
+                                <Link to="/setting">
+                                  <span
+                                    class="px-2 inline-flex text-xs leading-5 font-semibold
 rounded-full bg-yellow-100 text-yellow-800"
-                                >
-                                  Anda memakai akun ini!
-                                </span>
-                              </Link>
-                            ) : (
-                              <>
-                                <ul
-                                  className="flex flex-col md:flex-row items-start md:items-center
+                                  >
+                                    Anda memakai akun ini!
+                                  </span>
+                                </Link>
+                              ) : (
+                                <>
+                                  <ul
+                                    className="flex flex-col md:flex-row items-start md:items-center
 text-gray-600 text-sm mt-3"
-                                >
-                                  <li className="flex items-center mr-3 mt-3 md:mt-0">
-                                    <span className="mr-2">
-                                      <button
-                                        className="bg-indigo-500 text-white active:bg-indigo-600
+                                  >
+                                    <li className="flex items-center mr-3 mt-3 md:mt-0">
+                                      <span className="mr-2">
+                                        <button
+                                          className="bg-indigo-500 text-white active:bg-indigo-600
 font-bold uppercase text-sm px-6 py-3 rounded shadow
 hover:shadow-lg outline-none focus:outline-none mr-1 mb-1
 ease-linear transition-all duration-150"
-                                        type="button"
-                                        onClick={() => this.updateData(item)}
-                                      >
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="16"
-                                          height="16"
-                                          fill="currentColor"
-                                          class="bi bi-pencil-square"
-                                          viewBox="0 0 16
-16"
+                                          type="button"
+                                          onClick={() => this.updateData(item)}
                                         >
-                                          <path
-                                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-pencil-square"
+                                            viewBox="0 0 16
+16"
+                                          >
+                                            <path
+                                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459
 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75
 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0
 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                                          />
-                                          <path
-                                            fill-rule="evenodd"
-                                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5
+                                            />
+                                            <path
+                                              fill-rule="evenodd"
+                                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5
 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0
 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1
 2.5v11z"
-                                          />
-                                        </svg>
-                                      </button>
-                                    </span>
-                                  </li>
-                                  <li className="flex items-center mr-3 mt-3 md:mt-0">
-                                    <span className="mr-2">
-                                      <button
-                                        className="bg-red-500 text-white active:bg-red-600
+                                            />
+                                          </svg>
+                                        </button>
+                                      </span>
+                                    </li>
+                                    <li className="flex items-center mr-3 mt-3 md:mt-0">
+                                      <span className="mr-2">
+                                        <button
+                                          className="bg-red-500 text-white active:bg-red-600
 font-bold uppercase text-sm px-6 py-3 rounded shadow
 hover:shadow-lg outline-none focus:outline-none mr-1 mb-1
 ease-linear transition-all duration-150"
-                                        type="button"
-                                        onClick={() => this.dropData(item)}
-                                      >
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="16"
-                                          height="16"
-                                          fill="currentColor"
-                                          class="bi bi-trash"
-                                          viewBox="0 0 16 16"
+                                          type="button"
+                                          onClick={() => this.dropData(item)}
                                         >
-                                          <path
-                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-trash"
+                                            viewBox="0 0 16 16"
+                                          >
+                                            <path
+                                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1
 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1
 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                                          />
-                                          <path
-                                            fill-rule="evenodd"
-                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0
+                                            />
+                                            <path
+                                              fill-rule="evenodd"
+                                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0
 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0
 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1
 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5
 3V2h11v1h-11z"
-                                          />
-                                        </svg>
-                                      </button>
-                                    </span>
-                                  </li>
-                                </ul>
-                              </>
-                            )}
-                          </div>
+                                            />
+                                          </svg>
+                                        </button>
+                                      </span>
+                                    </li>
+                                  </ul>
+                                </>
+                              )}
+                            </div>
+                          ) : (
+                            <span
+                              class="px-2 inline-flex text-xs leading-5 font-semibold
+rounded-full bg-yellow-100 text-yellow-800"
+                            >
+                              Anda Bukan Admin
+                            </span>
+                          )}
                         </td>
                       </tr>
                     ))}

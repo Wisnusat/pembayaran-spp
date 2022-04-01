@@ -11,6 +11,7 @@ import Petugas from "../Components/Table_Petugas";
 import Siswa from "../Components/Table_Siswa";
 import Spp from "../Components/Table_Spp";
 import Laporan from "../Components/Table_laporan";
+import Tunggakan from "../Components/Table_Tunggakan";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -131,18 +132,28 @@ class Dashboard extends React.Component {
     window.location = "/login";
   };
 
+  timeCheck = () => {
+    const today = new Date();
+    const date = today.getFullYear() + "-" + today.getMonth();
+    // let tomorrow = new Date();
+    // tomorrow.setDate(today.getDate() + 1);
+    console.log(date);
+    // console.log(tomorrow);
+  };
+
   componentDidMount() {
     this.getUser();
     this.getDataPembayaran();
     this.getDataPetugas();
     this.getDataSiswa();
     this.getDataKelas();
+    this.timeCheck();
   }
   render() {
     return (
       <div>
         {/* Page title starts */}
-        <div className="mt-10 lg:mt-9 container px-6 mx-auto flex flex-col lg:flex-row items-start items-center justify-between pb-4 border-b border-gray-300">
+        <div className="mt-10 lg:mt-9 container px-6 mx-auto flex flex-col lg:flex-row items-center justify-between pb-4 border-b border-gray-300">
           <div className="mx-auto">
             <h4 className="text-2xl font-bold leading-tight text-gray-800 text-center">
               {this.state.userData.nama_petugas}
@@ -296,8 +307,8 @@ class Dashboard extends React.Component {
                 tab1={<Petugas />}
                 title2="Siswa"
                 tab2={<Siswa />}
-                title3="Laporan"
-                tab3={<Laporan />}
+                title3="Kelas"
+                tab3={<Kelas />}
               />
 
               {/* Tabs 2 */}
@@ -308,25 +319,12 @@ class Dashboard extends React.Component {
                 color="indigo"
                 title1="Riwayat Pembayaran"
                 tab1={<RIWAYAT_PEMBAYARAN />}
-                title2="Kelas"
-                tab2={<Kelas />}
+                title2="Tunggakan"
+                tab2={<Tunggakan />}
                 title3="SPP"
                 tab3={<Spp />}
               />
 
-              {/* Tabs 3 */}
-              <h4 className="text-2xl font-bold leading-tight text-gray-800">
-                Laporan Tabs
-              </h4>
-              <Tabs
-                color="indigo"
-                title1="Sudah Bayar"
-                tab1={<Petugas />}
-                title2="Belum Bayar"
-                tab2={<Siswa />}
-                title3="Riwayat"
-                tab3={<RIWAYAT_PEMBAYARAN />}
-              />
               <div className="text-center mt-4">
                 <button
                   type="button"

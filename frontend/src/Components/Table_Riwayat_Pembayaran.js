@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { base_url } from "../Config.js";
+import moment from "moment";
 class Riwayat_Pembayaran extends React.Component {
   constructor() {
     super();
@@ -67,22 +68,23 @@ class Riwayat_Pembayaran extends React.Component {
   };
 
   addData = () => {
-    const today = new Date();
-    const date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    const time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + " " + time;
+    // const today = new Date();
+    // const date =
+    //   today.getFullYear() +
+    //   "-" +
+    //   (today.getMonth() + 1) +
+    //   "-" +
+    //   today.getDate();
+    // const time =
+    //   today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    // const dateTime = date + " " + time;
+    const today = moment().format("MMMM Do YYYY");
     this.toggleModal(true);
     this.setState({
       action: "add",
       id_pembayaran: "",
       nisn: "",
-      tgl_bayar: dateTime,
+      tgl_bayar: today,
       bulan_dibayar: "",
       tahun_dibayar: "",
       id_spp: "",
@@ -131,7 +133,15 @@ class Riwayat_Pembayaran extends React.Component {
       id_spp: this.state.id_spp,
       jumlah_bayar: this.state.jumlah_bayar,
     };
+    let status_update = {
+      nisn: form.nisn,
+      bulan: form.bulan_dibayar,
+      tahun: form.tahun_dibayar,
+      status: "lunas",
+    };
+
     let url = base_url + "/pembayaran";
+    let tunggakan_url = base_url + "/tunggakan";
     if (this.state.action === "add") {
       axios
         .post(url, form, {
@@ -140,7 +150,19 @@ class Riwayat_Pembayaran extends React.Component {
           },
         })
         .then((response) => {
+          window.alert(response.data.message);
           this.getDataPembayaran();
+        })
+        .catch((error) => console.log("catch"));
+
+      axios
+        .put(tunggakan_url, status_update, {
+          headers: {
+            Authorization: "Bearer " + this.state.token,
+          },
+        })
+        .then((response) => {
+          console.log("status di update");
         })
         .catch((error) => console.log("catch"));
     } else if (this.state.action === "update") {
@@ -172,7 +194,7 @@ class Riwayat_Pembayaran extends React.Component {
     return (
       <div>
         <div
-          className="mx-auto flex flex-row items-start
+          className="mx-auto flex flex-row
 items-center justify-between pb-4 border-b border-gray-300"
         >
           <div className="mx-auto">
@@ -565,7 +587,7 @@ py-4 whitespace-nowrap"
                                     class="px-2 inline-flex text-xs leading-5 font-semibold
 rounded-full bg-yellow-100 text-yellow-800"
                                   >
-                                    Sisa: Rp
+                                    Kembali: Rp
                                     {item.jumlah_bayar - item.spp.nominal}
                                   </span>
                                 </>

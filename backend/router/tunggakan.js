@@ -40,7 +40,6 @@ app.post("/", async (req, res) => {
     bulan: req.body.bulan,
     status: req.body.status,
   };
-
   tunggakan
     .create(data)
     .then((result) => {
@@ -63,11 +62,14 @@ app.put("/", async (req, res) => {
     nisn: req.body.nisn,
     id_spp: req.body.id_spp,
     bulan: req.body.bulan,
+    tahun: req.body.tahun,
     status: req.body.status,
   };
 
   let param = {
-    id_tunggakan: req.body.id_tunggakan,
+    nisn: req.body.nisn,
+    bulan: req.body.bulan,
+    tahun: req.body.tahun
   };
 
   tunggakan

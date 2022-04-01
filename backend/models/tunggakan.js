@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       nisn: DataTypes.INTEGER,
       id_spp: DataTypes.INTEGER,
-      bulan: DataTypes.DATE,
+      bulan: DataTypes.STRING,
+      tahun: DataTypes.STRING,
       status: DataTypes.ENUM("lunas", "belum_lunas"),
     },
     {

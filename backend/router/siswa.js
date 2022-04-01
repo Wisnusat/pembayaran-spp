@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
+var moment = require("moment"); // require
+moment().format();
 
 // call model
 const siswa = require("../models/index").siswa;
+const tunggakan = require("../models/index").tunggakan;
 
 // allow request body
 app.use(express.urlencoded({ extended: true }));
@@ -62,6 +65,8 @@ app.get("/", async (req, res) => {
 
 // add data
 app.post("/", async (req, res) => {
+  const today = new Date();
+
   // put data
   let data = {
     nisn: req.body.nisn,
@@ -86,6 +91,35 @@ app.post("/", async (req, res) => {
         message: error.message,
       });
     });
+
+  for (i = 1; i <= 10; i++) {
+    let bulan = new Date();
+    bulan.setDate(today.getDate() + i);
+
+    const bulan_tunggakan = today.getMonth() + i;
+    const tahun_tunggakan = today.getFullYear();
+
+    let data_tunggakan = {
+      nisn: data.nisn,
+      id_spp: data.id_spp,
+      bulan: bulan_tunggakan,
+      tahun: tahun_tunggakan,
+      status: "belum_lunas",
+    };
+
+    tunggakan.create(data_tunggakan).then((result) => {
+      res
+        .json({
+          message: "Data tunggakan inserted",
+          data: result,
+        })
+        .catch((error) => {
+          res.json({
+            message: error.message,
+          });
+        });
+    });
+  }
 });
 
 // update data
