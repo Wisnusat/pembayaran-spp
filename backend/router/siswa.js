@@ -92,9 +92,9 @@ app.post("/", async (req, res) => {
       });
     });
 
-  for (i = 1; i <= 10; i++) {
-    let bulan = new Date();
-    bulan.setDate(today.getDate() + i);
+  for (i = 1; i <=9; i++) {
+    // let bulan = new Date();
+    // bulan.setDate(today.getDate() + i);
 
     const bulan_tunggakan = today.getMonth() + i;
     const tahun_tunggakan = today.getFullYear();
@@ -117,6 +117,7 @@ app.post("/", async (req, res) => {
           res.json({
             message: error.message,
           });
+          console.log(message);
         });
     });
   }

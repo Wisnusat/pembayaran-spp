@@ -25,7 +25,10 @@ module.exports = {
         },
       },
       bulan: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
+      },
+      tahun: {
+        type: Sequelize.STRING,
       },
       status: {
         type: Sequelize.ENUM("lunas", "belum_lunas"),

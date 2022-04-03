@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       alamat: DataTypes.TEXT,
       no_telp: DataTypes.STRING,
       id_spp: DataTypes.INTEGER,
-      tunggakan: DataTypes.INTEGER,
     },
     {
       sequelize,

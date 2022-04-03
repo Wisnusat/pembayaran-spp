@@ -16,7 +16,6 @@ class Siswa extends React.Component {
       alamat: "",
       no_telp: "",
       id_spp: "",
-      tunggakan: 0,
       modal: "hidden",
       action: "",
       userData: "",
@@ -534,13 +533,6 @@ uppercase tracking-wider"
                       >
                         ID_SPP
                       </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500
-uppercase tracking-wider"
-                      >
-                        Tunggakan
-                      </th>
                       {/* <th
                         scope="col"
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500
@@ -606,14 +598,6 @@ py-4 whitespace-nowrap"
                         >
                           <div class="text-sm text-gray-900 text-center">
                             {item.id_spp}
-                          </div>
-                        </td>
-                        <td
-                          class="px-6
-py-4 whitespace-nowrap"
-                        >
-                          <div class="text-sm text-gray-900 text-center">
-                            Rp {item.tunggakan}
                           </div>
                         </td>
                         <td
