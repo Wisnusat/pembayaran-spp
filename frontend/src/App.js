@@ -10,6 +10,7 @@ import Login from "./Pages/Login";
 import Siswa from "./Pages/Siswa";
 import Dashboard from "./Pages/Dashboard";
 import Setting from "./Pages/Setting";
+import Invoice from "./Pages/Invoice"
 
 class App extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route path="/siswa/:nisn" component={Siswa} />
           <Route path="/siswa" component={Siswa} />
           <Route path="/setting" component={Setting} />
+          <Route path="/invoice" component={Invoice} />
         </Switch>
       </div>
     );

@@ -20,6 +20,7 @@ const petugas = require("./router/petugas");
 const pembayaran = require("./router/pembayaran");
 const auth = require("./router/auth");
 const tunggakan = require("./router/tunggakan");
+const tunggakanSiswa = require("./router/tunggakanSiswa")
 
 app.use("/auth", auth);
 app.use("/kelas", kelas);
@@ -28,6 +29,7 @@ app.use("/siswa", siswa);
 app.use("/petugas", petugas);
 app.use("/pembayaran", pembayaran);
 app.use("/tunggakan", tunggakan);
+app.use("/tunggakanSiswa", tunggakanSiswa)
 
 app.listen(8000, () => {
   console.log("Server run on 8000");

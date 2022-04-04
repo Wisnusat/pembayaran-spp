@@ -11,13 +11,14 @@ class Dashboard extends React.Component {
     super();
     this.state = {
       nisn: "",
-      data_siswa: "",
-      data_spp: "",
+      data_siswa: [],
+      data_spp: [],
       data_pembayaran: [],
       data_kelas: "",
-      tunggakan: 0,
+      tunggakan: 10,
       message: "",
       found: "",
+      data_tunggakan: [],
     };
   }
 
@@ -37,7 +38,6 @@ class Dashboard extends React.Component {
           let kelas = siswa.kelas;
           let spp = siswa.spp;
           let pembayaran = siswa.pembayaran;
-          let tunggakan = siswa.tunggakan;
 
           this.setState({
             data_siswa: siswa,
@@ -45,7 +45,6 @@ class Dashboard extends React.Component {
             data_pembayaran: pembayaran,
             data_kelas: kelas,
             nisn: siswa.nisn,
-            tunggakan: tunggakan,
             message: response.data.message,
           });
         } else {
@@ -57,11 +56,30 @@ class Dashboard extends React.Component {
       .catch((error) => console.log(error));
   };
 
+  getDataTunggakan = () => {
+    let nisn = this.props.match.params.nisn;
+    let url_tunggakan =
+      "http://localhost:8000/tunggakanSiswa/" + nisn + "/belum_lunas";
+
+    axios
+      .get(url_tunggakan)
+      .then((response) => {
+        let data_tunggakan = JSON.parse(
+          JSON.stringify(response.data.tunggakan)
+        );
+        this.setState({
+          data_tunggakan: data_tunggakan,
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   componentDidMount() {
     if (!this.props.match.params.nisn) {
       window.location = "/login";
     }
     this.getData();
+    this.getDataTunggakan();
   }
 
   render() {
@@ -161,11 +179,12 @@ class Dashboard extends React.Component {
                     <div className="w-full p-6 border-t border-b lg:border-t-0 lg:border-b-0 sm:border-l sm:border-r border-gray-300">
                       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
                         <div className="text-xl text-center w-full bg-indigo-100 text-indigo-700 dark:text-indigo-600 rounded font-medium p-3 lg:mr-3">
-                          SPP{this.state.data_spp.tahun} || Rp{" "}
-                          {this.state.data_spp.nominal}
+                          SPP || Rp{this.state.data_spp.nominal}
                         </div>
                         <div className="mt-4 text-center w-full lg:mt-0 text-xl bg-red-200 text-red-500 rounded font-medium p-3">
-                          Tunggakan || Rp{this.state.tunggakan}
+                          Tunggakan || Rp
+                          {this.state.data_tunggakan.length *
+                            this.state.data_spp.nominal}
                         </div>
                       </div>
                       <div className="mt-6 mb-8 w-full bg-gray-100 dark:bg-gray-700 rounded p-4 relative">

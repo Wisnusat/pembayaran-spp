@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { base_url } from "../Config.js";
 import moment from "moment";
+import { Link } from "react-router-dom";
 class Riwayat_Pembayaran extends React.Component {
   constructor() {
     super();
@@ -21,6 +22,7 @@ class Riwayat_Pembayaran extends React.Component {
       jumlah_bayar: "",
       modal: "hidden",
       action: "",
+      invoice: [],
     };
     // dapetin token dari localstorage
     if (localStorage.getItem("token")) {
@@ -105,6 +107,30 @@ class Riwayat_Pembayaran extends React.Component {
       jumlah_bayar: selectedItem.jumlah_bayar,
     });
   };
+
+  downloadFile = (selectedItem) => {
+    this.setState({
+      id_pembayaran: selectedItem.id_pembayaran,
+      id_petugas: selectedItem.id_petugas,
+      nisn: selectedItem.nisn,
+      tgl_bayar: selectedItem.tgl_bayar,
+      bulan_dibayar: selectedItem.bulan_dibayar,
+      tahun_dibayar: selectedItem.tahun_dibayar,
+      id_spp: selectedItem.id_spp,
+      jumlah_bayar: selectedItem.jumlah_bayar,
+    });
+    localStorage.setItem(
+      "data_pembayaran",
+      this.state.id_pembayaran,
+      this.state.id_petugas,
+      this.state.nisn,
+      // tgl_bayar,
+      // bulan_dibayar,
+      // tahun_dibayar,
+      // id_spp,
+      // jumlah_bayar
+    );
+  };
   dropData = (selectedItem) => {
     if (window.confirm("Yakin nih dihapus?")) {
       let url = base_url + "/pembayaran/" + selectedItem.id_pembayaran;
@@ -186,6 +212,45 @@ class Riwayat_Pembayaran extends React.Component {
       this.setState({ modal: "hidden" });
     }
   };
+
+  // getPDF = (ev) => {
+  //   ev.preventDefault();
+  //   var HTML_Width = $("article").width();
+  //   var HTML_Height = $("article").height();
+  //   var top_left_margin = 15;
+  //   var PDF_Width = HTML_Width + top_left_margin * 2;
+  //   var PDF_Height = PDF_Width * 1.5 + top_left_margin * 2;
+  //   var canvas_image_width = HTML_Width;
+  //   var canvas_image_height = HTML_Height;
+  //   var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+  //   html2canvas($("article")[0], { allowTaint: true }).then(function (canvas) {
+  //     canvas.getContext("2d");
+  //     var imgData = canvas.toDataURL("image/jpeg", 1.0);
+  //     var pdf = new jsPDF("p", "pt", [PDF_Width, PDF_Height]);
+  //     pdf.addImage(
+  //       imgData,
+  //       "JPG",
+  //       top_left_margin,
+  //       top_left_margin,
+  //       canvas_image_width,
+  //       canvas_image_height
+  //     );
+  //     for (var i = 1; i <= totalPDFPages; i++) {
+  //       pdf.addPage(PDF_Width, PDF_Height);
+  //       pdf.addImage(
+  //         imgData,
+  //         "JPG",
+  //         top_left_margin,
+  //         -(PDF_Height * i) + top_left_margin * 4,
+  //         canvas_image_width,
+  //         canvas_image_height
+  //       );
+  //     }
+  //     pdf.save(`Pembayaran-spp.pdf`);
+  //   });
+  // };
+
   componentDidMount() {
     this.getUser();
     this.getDataPembayaran();
@@ -718,6 +783,30 @@ ease-linear transition-all duration-150"
                                     />
                                   </svg>
                                 </button>
+                              </span>
+                            </li>
+                            <li className="flex items-center mr-3 mt-3 md:mt-0">
+                              <span className="mr-2">
+                                <Link to="/invoice">
+                                  <button
+                                    className="bg-green-500 text-white active:bg-indigo-600
+font-bold uppercase text-sm px-6 py-3 rounded shadow
+hover:shadow-lg outline-none focus:outline-none mr-1 mb-1
+ease-linear transition-all duration-150"
+                                    type="button"
+                                    onClick={() => this.downloadFile(item)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 384 512"
+                                      width="16"
+                                      height="16"
+                                      fill="currentColor"
+                                    >
+                                      <path d="M384 128h-128V0L384 128zM256 160H384v304c0 26.51-21.49 48-48 48h-288C21.49 512 0 490.5 0 464v-416C0 21.49 21.49 0 48 0H224l.0039 128C224 145.7 238.3 160 256 160zM255 295L216 334.1V232c0-13.25-10.75-24-24-24S168 218.8 168 232v102.1L128.1 295C124.3 290.3 118.2 288 112 288S99.72 290.3 95.03 295c-9.375 9.375-9.375 24.56 0 33.94l80 80c9.375 9.375 24.56 9.375 33.94 0l80-80c9.375-9.375 9.375-24.56 0-33.94S264.4 285.7 255 295z" />
+                                    </svg>
+                                  </button>
+                                </Link>
                               </span>
                             </li>
                           </ul>

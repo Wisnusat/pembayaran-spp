@@ -7,6 +7,8 @@ class Siswa extends React.Component {
     this.state = {
       token: "",
       data_siswa: [],
+      data_kelas: [],
+      data_spp: [],
       message: "",
       found: "",
       nisn: "",
@@ -61,6 +63,61 @@ class Siswa extends React.Component {
       })
       .catch((error) => console.log(error));
   };
+
+  getDataSpp = () => {
+    let url = base_url + "/spp";
+
+    axios
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      })
+      .then((response) => {
+        this.setState({
+          found: response.data.found,
+        });
+        if (this.state.found) {
+          let data_spp = JSON.parse(JSON.stringify(response.data.spp));
+
+          this.setState({
+            data_spp: data_spp,
+          });
+        } else {
+          this.setState({
+            message: response.data.message,
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  getDataKelas = () => {
+    let url = base_url + "/kelas";
+    axios
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      })
+      .then((response) => {
+        this.setState({
+          found: response.data.found,
+        });
+        if (this.state.found) {
+          let data_kelas = JSON.parse(JSON.stringify(response.data.kelas));
+          this.setState({
+            data_kelas: data_kelas,
+          });
+        } else {
+          this.setState({
+            message: response.data.message,
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
   addData = () => {
     this.toggleModal(true);
     this.setState({
@@ -150,6 +207,8 @@ class Siswa extends React.Component {
   componentDidMount() {
     this.getDataSiswa();
     this.getUser();
+    this.getDataSpp();
+    this.getDataKelas();
   }
   render() {
     return (
@@ -191,6 +250,7 @@ py-2 text-sm"
                 Tambah Data
               </button>
             )}
+
             {/* Modal */}
             <div
               className={`${this.state.modal}
@@ -262,6 +322,7 @@ text-gray-700"
                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block
 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                       value={this.state.nama}
+                                      placeholder="Nama Lengkap"
                                       onChange={(ev) =>
                                         this.setState({ nama: ev.target.value })
                                       }
@@ -283,6 +344,7 @@ text-gray-700"
                                       autocomplete="no_telp"
                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block
 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                      placeholder="Nomor Telepon"
                                       value={this.state.no_telp}
                                       onChange={(ev) =>
                                         this.setState({
@@ -331,6 +393,7 @@ text-gray-700"
                                         autocomplete="nisn"
                                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block
 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                        placeholder="Nisn"
                                         value={this.state.nisn}
                                         onChange={(ev) =>
                                           this.setState({
@@ -356,6 +419,7 @@ text-gray-700"
                                       autocomplete="nis"
                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block
 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                      placeholder="Nis"
                                       value={this.state.nis}
                                       onChange={(ev) =>
                                         this.setState({ nis: ev.target.value })
@@ -378,6 +442,7 @@ text-gray-700"
                                       autocomplete="alamat"
                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block
 w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                      placeholder="Alamat Lengkap"
                                       value={this.state.alamat}
                                       onChange={(ev) =>
                                         this.setState({
@@ -395,7 +460,7 @@ text-gray-700"
                                     >
                                       Kelas
                                     </label>
-                                    <input
+                                    {/* <input
                                       type="number"
                                       name="id_kelas"
                                       id="id_kelas"
@@ -409,7 +474,27 @@ w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         })
                                       }
                                       required
-                                    />
+                                    /> */}
+                                    <select
+                                      id="id_kelas"
+                                      name="id_kelas"
+                                      class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white
+rounded-md shadow-sm focus:outline-none focus:ring-indigo-500
+focus:border-indigo-500 sm:text-sm"
+                                      onChange={(ev) =>
+                                        this.setState({
+                                          id_kelas: ev.target.value,
+                                        })
+                                      }
+                                      required
+                                    >
+                                      <option selected>Pilih Kelas</option>
+                                      {this.state.data_kelas.map((item) => (
+                                        <option value={item.id_kelas}>
+                                          {item.nama_kelas}
+                                        </option>
+                                      ))}
+                                    </select>
                                   </div>
                                   <div class="col-span-6 sm:col-span-3">
                                     <label
@@ -419,7 +504,7 @@ text-gray-700"
                                     >
                                       SPP
                                     </label>
-                                    <input
+                                    {/* <input
                                       type="number"
                                       name="id_spp"
                                       id="id_spp"
@@ -433,7 +518,27 @@ w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                         })
                                       }
                                       required
-                                    />
+                                    /> */}
+                                    <select
+                                      id="id_spp"
+                                      name="id_spp"
+                                      class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white
+rounded-md shadow-sm focus:outline-none focus:ring-indigo-500
+focus:border-indigo-500 sm:text-sm"
+                                      onChange={(ev) =>
+                                        this.setState({
+                                          id_spp: ev.target.value,
+                                        })
+                                      }
+                                      required
+                                    >
+                                      <option selected>Pilih Spp</option>
+                                      {this.state.data_spp.map((item) => (
+                                        <option value={item.id_spp}>
+                                          {item.kelas}
+                                        </option>
+                                      ))}
+                                    </select>
                                   </div>
                                 </div>
                               </div>

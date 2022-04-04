@@ -69,7 +69,7 @@ app.put("/", async (req, res) => {
   let param = {
     nisn: req.body.nisn,
     bulan: req.body.bulan,
-    tahun: req.body.tahun
+    tahun: req.body.tahun,
   };
 
   tunggakan
