@@ -1,8 +1,9 @@
-import React from "react";
 import axios from "axios";
-import { base_url } from "../Config.js";
 import moment from "moment";
+import React from "react";
 import { Link } from "react-router-dom";
+import { base_url } from "../Config.js";
+
 class Riwayat_Pembayaran extends React.Component {
   constructor() {
     super();
@@ -119,17 +120,18 @@ class Riwayat_Pembayaran extends React.Component {
       id_spp: selectedItem.id_spp,
       jumlah_bayar: selectedItem.jumlah_bayar,
     });
-    localStorage.setItem(
-      "data_pembayaran",
-      this.state.id_pembayaran,
-      this.state.id_petugas,
-      this.state.nisn,
-      // tgl_bayar,
-      // bulan_dibayar,
-      // tahun_dibayar,
-      // id_spp,
-      // jumlah_bayar
-    );
+    localStorage.setItem("id_pembayaran", selectedItem.id_pembayaran);
+    localStorage.setItem("nisn", selectedItem.nisn);
+    localStorage.setItem("tgl_bayar", selectedItem.tgl_bayar);
+    localStorage.setItem("bulan_dibayar", selectedItem.bulan_dibayar);
+    localStorage.setItem("tahun_dibayar", selectedItem.tahun_dibayar);
+    localStorage.setItem("id_spp", selectedItem.id_spp);
+    localStorage.setItem("jumlah_bayar", selectedItem.jumlah_bayar);
+    localStorage.setItem("id_petugas", selectedItem.id_petugas);
+    localStorage.setItem("nama_petugas", selectedItem.petugas.nama_petugas);
+    localStorage.setItem("nama_siswa", selectedItem.siswa.nama);
+    localStorage.setItem("kelas", selectedItem.spp.kelas);
+    localStorage.setItem("nominal", selectedItem.spp.nominal);
   };
   dropData = (selectedItem) => {
     if (window.confirm("Yakin nih dihapus?")) {
@@ -288,7 +290,7 @@ py-2 text-sm"
             </button>
             {/* Modal */}
             <div
-              className={`${this.state.modal}
+              className={`${this.state.modal} 
 justify-center items-center flex overflow-x-hidden overflow-y-auto
 fixed inset-0 z-50 outline-none focus:outline-none`}
             >
